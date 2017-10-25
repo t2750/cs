@@ -1,67 +1,132 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<meta name="keywords" content="�ٶȵ�ͼ,�ٶȵ�ͼAPI���ٶȵ�ͼ�Զ��幤�ߣ��ٶȵ�ͼ���������ù���" />
-<meta name="description" content="�ٶȵ�ͼAPI�Զ����ͼ�������û��ڿ��ӻ����������ɰٶȵ�ͼ" />
-<title>�ٶȵ�ͼAPI�Զ����ͼ</title>
-<!--���ðٶȵ�ͼAPI-->
+<meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
+<meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
+<title>百度地图API自定义地图</title>
+<!--引用百度地图API-->
 <style type="text/css">
     html,body{margin:0;padding:0;}
     .iw_poi_title {color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
     .iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
 </style>
 <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+<script>
+window.onload = windowHeight; //页面载入完毕执行函数
+    function windowHeight() {
+      var h = document.documentElement.clientHeight; //获取当前窗口可视操作区域高度
+      var bodyHeight = document.getElementById("dituContent"); //寻找ID为content的对象
+      bodyHeight.style.height = (h-10) + "px"; //你想要自适应高度的对象
+    }
+    setInterval(windowHeight, 500);//每半秒执行一次windowHeight函数
+</script>
 </head>
 
 <body>
-  <!--�ٶȵ�ͼ����-->
-  <div style="width:697px;height:550px;border:#ccc solid 1px;" id="dituContent"></div>
+  <!--百度地图容器-->
+  <div style="width:99%;height:550px;border:#ccc solid 1px;" id="dituContent"></div>
 </body>
 <script type="text/javascript">
-    //�����ͳ�ʼ����ͼ������
+    //创建和初始化地图函数：
     function initMap(){
-        createMap();//������ͼ
-        setMapEvent();//���õ�ͼ�¼�
-        addMapControl();//���ͼ���ӿؼ�
-        addMarker();//���ͼ������marker
+        createMap();//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+        addMarker();//向地图中添加marker
     }
     
-    //������ͼ������
+    //创建地图函数：
     function createMap(){
-        var map = new BMap.Map("dituContent");//�ڰٶȵ�ͼ�����д���һ����ͼ
-        var point = new BMap.Point(112.911413,28.242882);//����һ�����ĵ�����
-        map.centerAndZoom(point,11);//�趨��ͼ�����ĵ�����겢����ͼ��ʾ�ڵ�ͼ������
-        window.map = map;//��map�����洢��ȫ��
+        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(112.997414,28.18337);//定义一个中心点坐标
+        map.centerAndZoom(point,13);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
     }
     
-    //��ͼ�¼����ú�����
+    //地图事件设置函数：
     function setMapEvent(){
-        map.enableDragging();//���õ�ͼ��ק�¼���Ĭ������(�ɲ�д)
-        map.enableScrollWheelZoom();//���õ�ͼ���ַŴ���С
-        map.enableDoubleClickZoom();//�������˫���Ŵ�Ĭ������(�ɲ�д)
-        map.enableKeyboard();//���ü����������Ҽ��ƶ���ͼ
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
     }
     
-    //��ͼ�ؼ����Ӻ�����
+    //地图控件添加函数：
     function addMapControl(){
-        //���ͼ���������ſؼ�
+        //向地图中添加缩放控件
 	var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
 	map.addControl(ctrl_nav);
-        //���ͼ����������ͼ�ؼ�
+        //向地图中添加缩略图控件
 	var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
 	map.addControl(ctrl_ove);
-        //���ͼ�����ӱ����߿ؼ�
+        //向地图中添加比例尺控件
 	var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
 	map.addControl(ctrl_sca);
     }
     
-    //��ע������
+    //标注点数组
     var markerArr = [
-{title:"÷Ϫ��2",content:"�绰��12331323<br/>ɶ�ٶȷ�",point:"112.910694|20.194119",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:12}},
-{title:"÷Ϫ��",content:"�绰��12331323<br/>ɶ�ٶȷ�",point:"110.910694|28.194119",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:12}}
+{title:"U智机器人(长沙德思勤中心)",content:"电话：18229731392<br/>描述：<br/>特色：",point:"113.016041|28.119566",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:12}},
+{title:"U智机器人(长沙北辰三角州中心)",content:"电话：17773191979<br/>描述：<br/>特色：",point:"112.991657|28.238502",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:13}},
+{title:"U智机器人(长沙奥克斯中心)",content:"电话：17708173100<br/>描述：<br/>特色：",point:"112.960546|28.230705",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:14}},
+{title:"U智机器人(长沙雨花亭中心)",content:"电话：18163702211<br/>描述：<br/>特色：",point:"113.003141|28.160558",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:15}},
+{title:"U智机器人(长沙星沙中心)",content:"电话：18008167803<br/>描述：<br/>特色：",point:"113.069881|28.261651",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:16}},
+{title:"亮宁机器人(长沙亮宁中山路培训点)",content:"电话：13319601581<br/>描述：<br/>特色：",point:"112.984577|28.208294",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:17}},
+{title:"亮宁机器人(长沙市亮宁雨花区第六都培训点)",content:"电话：17673133188<br/>描述：<br/>特色：",point:"112.992619|28.156446",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:18}},
+{title:"亮宁机器人(长沙县万家丽北路培训部)",content:"电话：13278862293<br/>描述：<br/>特色：",point:"113.06379|28.273501",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:19}},
+{title:"享动科教(东塘工人文化宫培训点)",content:"电话：15973170137<br/>描述：<br/>特色：",point:"113.000044|28.171048",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:20}},
+{title:"享动科教(万境水岸校区)",content:"电话：18867360732<br/>描述：<br/>特色：",point:"113.035868|28.126516",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:21}},
+{title:"乐奇创客机器人教育",content:"电话：13739055725<br/>描述：<br/>特色：",point:"113.002443|28.167694",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:22}},
+{title:"乐奇创客机器人教育",content:"电话：13739055725<br/>描述：<br/>特色：",point:"113.003338|28.163165",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:23}},
+{title:"乐奇创客机器人教育",content:"电话：13739055725<br/>描述：<br/>特色：",point:"113.034947|28.121893",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:24}},
+{title:"好习惯(窑岭校区)",content:"电话：81512170<br/>描述：<br/>特色：",point:"113.002805|28.193678",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:25}},
+{title:"好习惯(世纪金源校区)",content:"电话：89728138<br/>描述：<br/>特色：",point:"112.986665|28.256227",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:26}},
+{title:"好习惯(坦立校区)",content:"电话：82530658<br/>描述：<br/>特色：",point:"112.933068|28.223574",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:27}},
+{title:"好习惯(酷贝拉校区)",content:"电话：83571938<br/>描述：<br/>特色：",point:"112.989667|28.182369",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:28}},
+{title:"好习惯(喜盈门校区)",content:"电话：81188170<br/>描述：<br/>特色：",point:"113.044501|28.138639",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:29}},
+{title:"领动机器人(长沙郡原校区)",content:"电话：81127005<br/>描述：<br/>特色：",point:"112.942757|28.226976",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:30}},
+{title:"领动机器人(万博汇校区)",content:"电话：81167005<br/>描述：<br/>特色：",point:"113.00357|28.164208",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:31}},
+{title:"领动机器人(四方坪校区)",content:"电话：88937005<br/>描述：<br/>特色：",point:"113.01382|28.24319",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:32}},
+{title:"领动机器人(星沙校区)",content:"电话：86157005<br/>描述：<br/>特色：",point:"113.092916|28.256529",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:33}},
+{title:"领动机器人(青园校区)",content:"电话：81787005<br/>描述：<br/>特色：",point:"113.002689|28.131857",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:34}},
+{title:"领动机器人(万家丽校区)",content:"电话：81717005<br/>描述：<br/>特色：",point:"113.036186|28.190074",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:35}},
+{title:"领动机器人(月湖校区)",content:"电话：81197005<br/>描述：<br/>特色：",point:"113.050424|28.250411",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:36}},
+{title:"领动机器人(长沙大道校区)",content:"电话：81159005<br/>描述：<br/>特色：",point:"113.049731|28.174623",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:37}},
+{title:"领动机器人(万境校区)",content:"电话：81138005<br/>描述：<br/>特色：",point:"113.020501|28.122655",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:38}},
+{title:"领动机器人(梅溪湖南校区)",content:"电话：81766005<br/>描述：<br/>特色：",point:"112.90831|28.192671",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:39}},
+{title:"领动机器人(梅溪湖北校区)",content:"电话：88713005<br/>描述：<br/>特色：",point:"112.888923|28.195875",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:40}},
+{title:"领动机器人(北辰校区)",content:"电话：81161005<br/>描述：<br/>特色：",point:"112.985431|28.24031",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:41}},
+{title:"领动机器人(九曲花街校区)",content:"电话：81918005<br/>描述：<br/>特色：",point:"113.001349|28.262031",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:42}},
+{title:"领动机器人(洋湖校区)",content:"电话：15871183520<br/>描述：<br/>特色：",point:"112.946112|28.13547",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:43}},
+{title:"领动机器人(大剧院校区)",content:"电话：18670015326<br/>描述：<br/>特色：",point:"113.004184|28.195394",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:44}},
+{title:"棒棒贝贝",content:"电话：83750660<br/>描述：<br/>特色：",point:"113.032924|28.176769",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:45}},
+{title:"棒棒贝贝",content:"电话：83991212<br/>描述：<br/>特色：",point:"113.002451|28.162833",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:46}},
+{title:"棒棒贝贝",content:"电话：89788811<br/>描述：<br/>特色：",point:"113.038259|28.196767",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:47}},
+{title:"棒棒贝贝",content:"电话：89788811<br/>描述：<br/>特色：",point:"113.027205|28.191222",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:48}},
+{title:"棒棒贝贝",content:"电话：81158811<br/>描述：<br/>特色：",point:"113.044379|28.184885",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:49}},
+{title:"棒棒贝贝",content:"电话：85568811<br/>描述：<br/>特色：",point:"112.985711|28.26843",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:50}},
+{title:"棒棒贝贝",content:"电话：89788811<br/>描述：<br/>特色：",point:"112.990773|28.214735",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:51}},
+{title:"棒棒贝贝",content:"电话：81025227<br/>描述：<br/>特色：",point:"113.06955|28.273027",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:52}},
+{title:"好小子(省图6楼校区)",content:"电话：85792118<br/>描述：<br/>特色：",point:"113.00405|28.193931",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:53}},
+{title:"好小子(省图1楼校区)",content:"电话：85782162<br/>描述：<br/>特色：",point:"113.00405|28.193931",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:54}},
+{title:"好小子(国际教育部)",content:"电话：13518798726<br/>描述：<br/>特色：",point:"113.00405|28.193931",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:55}},
+{title:"好小子(河西郡原1楼校区)",content:"电话：85559952<br/>描述：<br/>特色：",point:"112.941773|28.22734",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:56}},
+{title:"好小子(河西郡原3楼校区)",content:"电话：89827812<br/>描述：<br/>特色：",point:"112.941773|28.22734",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:57}},
+{title:"好小子(侯家塘校区)",content:"电话：86159313<br/>描述：<br/>特色：",point:"112.993376|28.177549",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:58}},
+{title:"好小子(星沙校区1)",content:"电话：81930050<br/>描述：<br/>特色：",point:"113.092916|28.252107",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:59}},
+{title:"好小子(万科城校区)",content:"电话：15871295712<br/>描述：<br/>特色：",point:"113.001735|28.257246",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:60}},
+{title:"好小子(雨花亭校区)",content:"电话：81323081<br/>描述：<br/>特色：",point:"113.001507|28.164208",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:61}},
+{title:"好小子(少帅府校区)",content:"电话：85559951<br/>描述：<br/>特色：",point:"112.987638|28.20805",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:62}},
+{title:"好小子(晚报校区)",content:"电话：85532030<br/>描述：<br/>特色：",point:"113.025151|28.214371",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:63}},
+{title:"好小子(梅溪湖校区)",content:"电话：88361298<br/>描述：<br/>特色：",point:"112.86912|28.205995",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:64}},
+{title:"好小子(富兴青园校区)",content:"电话：85071087<br/>描述：<br/>特色：",point:"113.00425|28.128744",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:65}},
+{title:"好小子(星沙校区2)",content:"电话：81930050<br/>描述：<br/>特色：",point:"113.093312|28.258922",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:66}},
+{title:"好小子(奥莱校区)",content:"电话：85111688<br/>描述：<br/>特色：",point:"113.000569|28.071645",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:67}},
+{title:"好小子(宁乡校区)",content:"电话：87031033<br/>描述：<br/>特色：",point:"112.56572|28.274384",isOpen:0,icon:{w:23,h:25,l:0,t:21,x:9,lb:68}}
+
 		 ];
-    //����marker
+    //创建marker
     function addMarker(){
         for(var i=0;i<markerArr.length;i++){
             var json = markerArr[i];
@@ -71,10 +136,11 @@
 			var iconImg = createIcon(json.icon);
             var marker = new BMap.Marker(point,{icon:iconImg});
 			var iw = createInfoWindow(i);
-			var label = new BMap.Label(json.title,{"offset":new BMap.Size(json.icon.lb-json.icon.x+10,-20)});
+			var label = new BMap.Label(json.title,{"offset":new BMap.Size(20,5)});
 			marker.setLabel(label);
             map.addOverlay(marker);
             label.setStyle({
+			display:"none",
                         borderColor:"#808080",
                         color:"#333",
                         cursor:"pointer"
@@ -91,7 +157,7 @@
 				    _marker.getLabel().hide();
 			    })
 			    _iw.addEventListener("close",function(){
-				    _marker.getLabel().show();
+				    //_marker.getLabel().show();
 			    })
 				label.addEventListener("click",function(){
 				    _marker.openInfoWindow(_iw);
@@ -103,18 +169,18 @@
 			})()
         }
     }
-    //����InfoWindow
+    //创建InfoWindow
     function createInfoWindow(i){
         var json = markerArr[i];
         var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>"+json.content+"</div>");
         return iw;
     }
-    //����һ��Icon
+    //创建一个Icon
     function createIcon(json){
-        var icon = new BMap.Icon("http://img2.web07.cn/UpPic/Png/201409/09/210299091153164.png", new BMap.Size(json.w*10,json.h*10),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
+        var icon = new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png", new BMap.Size(20,25),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
     }
     
-    initMap();//�����ͳ�ʼ����ͼ
+    initMap();//创建和初始化地图
 </script>
 </html>
